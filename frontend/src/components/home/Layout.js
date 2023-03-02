@@ -9,12 +9,12 @@ function Layout() {
         const getAllRooms = async()=>{
             const totalRooms = await axios.get('http://localhost:3001/admin/allRooms')
             setRoomsData(totalRooms.data)
-            // setRooms(totalRooms)
         }
         getAllRooms()
     },[])
     
     const roomCardList = roomsData.map((item)=><RoomDetailCard
+        key={item._id}
         item={item}
     />)
 

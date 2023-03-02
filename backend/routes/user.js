@@ -77,10 +77,13 @@ const isBooked = async (startDate,endDate,roomNo)=>{
     }
     //------------------
     const choosedRoom = await BookedRoom.findOne({roomNo:roomNo})
-    for(let date1 of bookedDateList){
-        for(let date2 of choosedRoom.bookedDate){
-            if(date1 === date2){
-                return {bookedDateList,dateIsBooked:true}
+    console.log(choosedRoom)
+    if(choosedRoom){
+        for(let date1 of bookedDateList){
+            for(let date2 of choosedRoom.bookedDate || []){
+                if(date1 === date2){
+                    return {bookedDateList,dateIsBooked:true}
+                }
             }
         }
     }
@@ -88,7 +91,7 @@ const isBooked = async (startDate,endDate,roomNo)=>{
 }
 
 route.post('/roomBooking',async(req,res)=>{
-    const {email,startTime,endTime,roomType,paymentMode,roomNo,amount,_id} = req.body
+    const {email,startTime,endTime,roomType,paymentMode,roomNo} = req.body
     const {bookedDateList,dateIsBooked} = await isBooked(startTime,endTime,roomNo)
     if(!dateIsBooked){
         const bookRoom = await BookedRoom.findOneAndUpdate({roomNo:roomNo},{
@@ -105,14 +108,14 @@ route.post('/roomBooking',async(req,res)=>{
         res.json({message:'room booked',user})
     }
     else{
-        res.status(401).json({message:'date already booked'})
+        res.json({message:'date already booked'})
     }
 })
 
-route.patch('/updateUser',async (req,res)=>{
+route.put('/updateUser',async (req,res)=>{
     const {email,startTime,endTime,roomType,paymentMode,roomNo,amount,_id} = req.body
-    const user = await User.findById(_id)
-    console.log(user)
+    const user = await User.findOne({_id:_id})
+    console.log("user",user)
 
     const {bookedDateList,dateIsBooked} = await isBooked(startTime,endTime,roomNo)
     if(dateIsBooked){
@@ -139,7 +142,7 @@ route.patch('/updateUser',async (req,res)=>{
             {new:true}
         )
 
-        await updateRoom.save();
+        // await updatedRoom.save();
         const updatedObj = await User.findOneAndUpdate(
             {_id:req.body._id},
             {...req.body,amount:(updateRoom.price * bookedDateList.length)}
@@ -150,8 +153,8 @@ route.patch('/updateUser',async (req,res)=>{
 
 
 route.delete('/cancelBooking',async (req,res)=>{
-    const { startTime,endTime, amount,roomNo } = await User.findById(req.body._id)
-
+    const user = await User.findById(req.body._id)
+    const { startTime,endTime, amount,roomNo } = user
     const sdArr = startTime.split('-');
     const date = new Date().toISOString().slice(0,10)
     const cdArr = date.split('-');
@@ -176,6 +179,7 @@ route.delete('/cancelBooking',async (req,res)=>{
             refundedAmount = amount
         }
     }
+    const removeUser = await User.findByIdAndDelete(req.body._id)
     res.json({refundedAmount})
 })
 module.exports = route
