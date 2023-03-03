@@ -8,7 +8,7 @@ function AdminView() {
    
     useEffect(()=>{
         const defaultFetch = async() => {
-            const data = await axios.get('http://localhost:3001/user/pastBooking')
+            const data = await axios.get('http://localhost:3001/user/upcomingBooking')
             setBookedList(data.data)
         }
         defaultFetch()
@@ -38,8 +38,8 @@ function AdminView() {
   return (
     <div>
         <select onChange={blurHandler}>
-            <option value="past">Past Booking</option>
             <option value="future">Upcoming Booking</option>
+            <option value="past">Past Booking</option>
         </select>
         {content}
     </div>

@@ -1,14 +1,32 @@
-import {BrowserRouter, NavLink, Route, Routes} from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import React from 'react'
-import RoomDetailCard from './RoomDetailCard'
-import AdminView from '../admin/AdminView'
+import "./Header.css"
 
 function Header() {
   return (
-    <div>
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/admin">Admin View</NavLink>
-    </div>
+
+    <header className="header">
+      <div className="logo">Room Booking Admin Panel</div>
+      <nav className="nav">
+        <ul>
+          <li>
+            <NavLink to='/' className={({ isActive }) => isActive ? "active" : undefined}>
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to='/admin' className={({ isActive }) => isActive ? "active" : undefined}>
+              Admin View
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to='/createRoom' className={({ isActive }) => isActive ? "active" : undefined}>
+              Create Room
+            </NavLink>
+          </li>
+        </ul>
+      </nav>
+    </header>
   )
 }
 
