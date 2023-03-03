@@ -3,9 +3,13 @@ import RegistrationForm from "./components/home/RegistrationForm"
 import {Route, Routes} from 'react-router-dom'
 import AdminView from "./components/admin/AdminView";
 import EditForm from "./components/admin/EditForm";
+import Header from "./components/home/Header";
+
 function App() {
    return(
+    
     <div>
+        <Header />
         <Routes>
             <Route path="/" element={<Layout />}/>
             <Route path="editForm" element={<EditForm />} />

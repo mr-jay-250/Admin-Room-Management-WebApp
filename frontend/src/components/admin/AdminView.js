@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, {useEffect, useState} from 'react'
 import AdminViewCard from './AdminViewCard'
+import "./AdminView.css"
 
 function AdminView() {
     const [bookedList,setBookedList] = useState([])
