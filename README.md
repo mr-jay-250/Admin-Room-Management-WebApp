@@ -16,3 +16,6 @@ This site made in MERN Stack architecture.
       - 80 rs per room/day with room number B1, B2 and B3
    - 5 rooms of C type
       - 50 rs per room/day with room number C1, C2, C3, C4 and C5
+ 
+- Now admin can see the rooms on home page which he/she created just now.
+- Now admin can book rooms from home page.
